@@ -1,3 +1,0 @@
-[33m066d86e[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m Security fix: Remove hardcoded API key and use environment variables
-[33m45932bf[m Rename project to EyeReadDemo - research demo for eye-tracking reading assistance
-[33m3d421f4[m Initial commit: GlimmerRead project
