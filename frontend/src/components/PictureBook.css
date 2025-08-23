@@ -1,0 +1,362 @@
+/* Picture Book Styles */
+.picture-book {
+  min-height: 100vh;
+  width: 100%;
+  padding: 20px;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background: linear-gradient(135deg, #e8f5e8 0%, #f0fff0 100%);
+}
+
+.picture-book-header {
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.back-button {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #e8f5e8;
+  border-radius: 25px;
+  padding: 12px 20px;
+  color: #4caf50;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.back-button:hover {
+  background: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  border-color: #4caf50;
+}
+
+.picture-book-title {
+  font-size: 3rem;
+  color: #2e7d32;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.picture-book-subtitle {
+  font-size: 1.3rem;
+  color: #4caf50;
+  margin-bottom: 20px;
+  line-height: 1.5;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.picture-book-content {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 25px;
+  padding: 40px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+}
+
+.page-counter {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #4caf50;
+}
+
+.selection-counter {
+  font-size: 0.9rem;
+  color: #e91e63;
+  font-weight: bold;
+}
+
+.images-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.image-card {
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.image-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.image-card.selected {
+  border: 4px solid #e91e63;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(233, 30, 99, 0.3);
+}
+
+.book-image {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  display: block;
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.image-card:hover .image-overlay {
+  opacity: 1;
+}
+
+.image-card.selected .image-overlay {
+  opacity: 1;
+  background: rgba(233, 30, 99, 0.2);
+}
+
+.selection-indicator {
+  background: #e91e63;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.book-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.navigation-controls {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.prev-button {
+  background: linear-gradient(45deg, #e91e63, #f06292);
+  color: white;
+}
+
+.next-button {
+  background: linear-gradient(45deg, #4caf50, #66bb6a);
+  color: white;
+}
+
+.nav-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.nav-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.action-controls {
+  margin-top: 10px;
+}
+
+.describe-button {
+  padding: 15px 30px;
+  border: none;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(45deg, #4caf50, #66bb6a);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.describe-button:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.describe-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.narration-section {
+  margin-top: 30px;
+  padding: 25px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #4caf50;
+}
+
+.narration-content {
+  text-align: center;
+}
+
+.narration-title {
+  font-size: 1.8rem;
+  color: #4caf50;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.narration-text {
+  margin: 20px 0;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #333;
+}
+
+.narration-text p {
+  margin-bottom: 15px;
+}
+
+.question-section {
+  margin-top: 20px;
+  padding: 20px;
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  border-radius: 15px;
+}
+
+.question-title {
+  font-size: 1.3rem;
+  color: #d35400;
+  margin-bottom: 10px;
+}
+
+.question-text {
+  font-size: 1.1rem;
+  color: #2c3e50;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .picture-book {
+    padding: 15px;
+  }
+  
+  .picture-book-title {
+    font-size: 2.5rem;
+  }
+  
+  .picture-book-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .back-button {
+    position: static;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  .picture-book-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .images-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .book-image {
+    height: 300px;
+  }
+  
+  .page-info {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+  
+  .navigation-controls {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .nav-button {
+    width: 100%;
+  }
+  
+  .describe-button {
+    width: 100%;
+    font-size: 1rem;
+  }
+  
+  .narration-text {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .picture-book-content {
+    padding: 20px;
+  }
+  
+  .picture-book-title {
+    font-size: 2rem;
+  }
+  
+  .book-image {
+    height: 250px;
+  }
+  
+  .narration-section {
+    padding: 20px;
+  }
+}

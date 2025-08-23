@@ -1,0 +1,222 @@
+/* Upload Page Styles */
+.upload-page {
+  min-height: 100vh;
+  width: 100%;
+  padding: 20px;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+}
+
+.upload-page-header {
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.upload-page-title {
+  font-size: 3rem;
+  color: #ad1457;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 700;
+}
+
+.upload-page-subtitle {
+  font-size: 1.3rem;
+  color: #e91e63;
+  margin-bottom: 20px;
+  line-height: 1.5;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.upload-page-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 25px;
+  padding: 40px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.upload-section {
+  margin-bottom: 30px;
+}
+
+/* Selected Image Preview */
+.selected-image-preview {
+  text-align: center;
+  margin: 30px 0;
+  padding: 25px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  border: 2px solid rgba(233, 30, 99, 0.3);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.preview-image {
+  max-width: 100%;
+  max-height: 400px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.change-image-btn {
+  background: linear-gradient(45deg, #e91e63, #f06292);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  box-shadow: 0 5px 15px rgba(233, 30, 99, 0.3);
+}
+
+.change-image-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(233, 30, 99, 0.4);
+}
+
+/* Narration Section */
+.narration-section {
+  margin-top: 30px;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #e91e63;
+}
+
+.narration-content {
+  text-align: center;
+}
+
+.narration-title {
+  font-size: 2rem;
+  color: #e91e63;
+  margin-bottom: 25px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.narration-text {
+  margin: 25px 0;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #333;
+  background: rgba(255, 247, 237, 0.8);
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.narration-text p {
+  margin-bottom: 15px;
+}
+
+.question-section {
+  margin-top: 25px;
+  padding: 20px;
+  background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+  border-radius: 15px;
+}
+
+.question-title {
+  font-size: 1.4rem;
+  color: #d68910;
+  margin-bottom: 10px;
+}
+
+.question-text {
+  font-size: 1.1rem;
+  color: #2c3e50;
+  font-style: italic;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Back Button */
+.back-button {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #fce4ec;
+  border-radius: 25px;
+  padding: 12px 20px;
+  color: #e91e63;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.back-button:hover {
+  background: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  border-color: #e91e63;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .upload-page {
+    padding: 15px;
+  }
+  
+  .upload-page-title {
+    font-size: 2.5rem;
+  }
+  
+  .upload-page-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .upload-page-content {
+    padding: 25px;
+  }
+  
+  .back-button {
+    position: static;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  .upload-page-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .preview-image {
+    max-height: 250px;
+  }
+  
+  .narration-text {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .upload-page-content {
+    padding: 20px;
+  }
+  
+  .upload-page-title {
+    font-size: 2rem;
+  }
+  
+  .selected-image-preview {
+    padding: 20px;
+  }
+  
+  .narration-section {
+    padding: 20px;
+  }
+}

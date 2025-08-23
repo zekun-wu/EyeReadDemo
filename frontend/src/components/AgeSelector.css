@@ -1,0 +1,141 @@
+.age-selector {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  max-width: 500px;
+}
+
+.selector-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.label-icon {
+  font-size: 1.3rem;
+}
+
+.label-text {
+  font-family: 'Fredoka One', cursive;
+}
+
+.age-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.age-option {
+  background: rgba(102, 126, 234, 0.1);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 0.75rem 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  min-height: 70px;
+  justify-content: center;
+}
+
+.age-option:hover {
+  background: rgba(102, 126, 234, 0.2);
+  border-color: rgba(102, 126, 234, 0.3);
+  transform: translateY(-2px);
+}
+
+.age-option.selected {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: #667eea;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.age-emoji {
+  font-size: 1.5rem;
+  display: block;
+}
+
+.age-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.age-option.selected .age-label {
+  color: white;
+}
+
+.age-description {
+  text-align: center;
+  color: #718096;
+  font-style: italic;
+}
+
+.age-description small {
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .age-selector {
+    padding: 1rem;
+  }
+  
+  .age-options {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.4rem;
+  }
+  
+  .age-option {
+    padding: 0.6rem 0.4rem;
+    min-height: 65px;
+  }
+  
+  .age-emoji {
+    font-size: 1.3rem;
+  }
+  
+  .age-label {
+    font-size: 0.75rem;
+  }
+  
+  .selector-label {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .age-options {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .age-option {
+    padding: 0.5rem 0.3rem;
+    min-height: 60px;
+  }
+  
+  .age-emoji {
+    font-size: 1.2rem;
+  }
+  
+  .age-label {
+    font-size: 0.7rem;
+  }
+  
+  .age-description small {
+    font-size: 0.8rem;
+  }
+}
