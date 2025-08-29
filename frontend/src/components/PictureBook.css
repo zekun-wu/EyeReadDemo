@@ -56,10 +56,10 @@
 .picture-book-content {
   background: rgba(255, 255, 255, 0.95);
   border-radius: 25px;
-  padding: 40px;
+  padding: 20px; /* Reduced padding to give more space to image */
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(10px);
-  max-width: 1400px;
+  max-width: 95vw; /* Use more of viewport width */
   margin: 0 auto;
 }
 
@@ -93,6 +93,15 @@
   margin-bottom: 40px;
 }
 
+/* Single image container for one image per page */
+.single-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+  min-height: 70vh; /* Use most of the viewport height */
+}
+
 .image-card {
   position: relative;
   border-radius: 15px;
@@ -101,6 +110,8 @@
   transition: all 0.3s ease;
   background: white;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  max-width: 90vw; /* Don't exceed viewport width */
+  max-height: 70vh; /* Don't exceed 70% of viewport height */
 }
 
 .image-card:hover {
@@ -116,8 +127,10 @@
 
 .book-image {
   width: 100%;
-  height: 400px;
-  object-fit: cover;
+  height: auto;
+  max-height: 70vh; /* Use most of viewport height */
+  min-height: 50vh; /* Ensure minimum size */
+  object-fit: contain; /* Preserve aspect ratio and show all details */
   display: block;
 }
 
