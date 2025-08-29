@@ -1,77 +1,60 @@
-/* Picture Book Styles */
+/* Picture Book Styles - Compact Layout */
 .picture-book {
   min-height: 100vh;
   width: 100%;
-  padding: 20px;
+  padding: 10px;
   font-family: 'Comic Sans MS', cursive, sans-serif;
   background: linear-gradient(135deg, #e8f5e8 0%, #f0fff0 100%);
+  display: flex;
+  flex-direction: column;
 }
 
-.picture-book-header {
-  text-align: center;
-  margin-bottom: 30px;
-  position: relative;
+/* Compact header with navigation */
+.compact-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .back-button {
-  position: absolute;
-  top: 0;
-  left: 20px;
   background: rgba(255, 255, 255, 0.9);
   border: 2px solid #e8f5e8;
   border-radius: 25px;
-  padding: 12px 20px;
+  padding: 10px 16px;
   color: #4caf50;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   font-family: inherit;
   backdrop-filter: blur(10px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
 
 .back-button:hover {
   background: white;
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   border-color: #4caf50;
 }
 
-.picture-book-title {
-  font-size: 3rem;
-  color: #2e7d32;
-  margin-bottom: 10px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.picture-book-subtitle {
-  font-size: 1.3rem;
-  color: #4caf50;
-  margin-bottom: 20px;
-  line-height: 1.5;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.picture-book-content {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 25px;
-  padding: 20px; /* Reduced padding to give more space to image */
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  max-width: 95vw; /* Use more of viewport width */
-  margin: 0 auto;
+.top-navigation {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 .page-info {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 25px;
-  padding: 10px 20px;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
+  gap: 5px;
+  text-align: center;
 }
 
 .page-counter {
@@ -81,25 +64,28 @@
 }
 
 .selection-counter {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: #e91e63;
   font-weight: bold;
 }
 
-.images-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 30px;
-  margin-bottom: 40px;
-}
-
-/* Single image container for one image per page */
-.single-image-container {
+/* Main image area - takes most of the space */
+.main-image-area {
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 30px;
-  min-height: 70vh; /* Use most of the viewport height */
+  padding: 0 20px;
+  margin-bottom: 15px;
+}
+
+/* Remove old styles that are no longer needed */
+.images-grid {
+  display: none; /* Not used in single image layout */
+}
+
+.single-image-container {
+  display: none; /* Replaced by main-image-area */
 }
 
 .image-card {
@@ -110,8 +96,9 @@
   transition: all 0.3s ease;
   background: white;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  max-width: 90vw; /* Don't exceed viewport width */
-  max-height: 70vh; /* Don't exceed 70% of viewport height */
+  max-width: 90vw;
+  max-height: 80vh; /* Increased to use more space */
+  width: 100%;
 }
 
 .image-card:hover {
@@ -128,8 +115,8 @@
 .book-image {
   width: 100%;
   height: auto;
-  max-height: 70vh; /* Use most of viewport height */
-  min-height: 50vh; /* Ensure minimum size */
+  max-height: 80vh; /* Increased to use more space */
+  min-height: 60vh; /* Larger minimum size */
   object-fit: contain; /* Preserve aspect ratio and show all details */
   display: block;
 }
@@ -171,23 +158,35 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.book-controls {
+/* Bottom section for controls and audio */
+.bottom-section {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  padding: 15px;
+  margin-top: auto;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.bottom-controls {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+/* Remove old navigation controls styles - now in top navigation */
+.book-controls {
+  display: none; /* No longer used */
 }
 
 .navigation-controls {
-  display: flex;
-  gap: 20px;
+  display: none; /* Moved to top */
 }
 
 .nav-button {
-  padding: 12px 24px;
+  padding: 10px 20px;
   border: none;
   border-radius: 25px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -215,26 +214,22 @@
   transform: none;
 }
 
-.action-controls {
-  margin-top: 10px;
-}
-
 .describe-button {
-  padding: 15px 30px;
+  padding: 12px 24px;
   border: none;
-  border-radius: 30px;
-  font-size: 1.1rem;
+  border-radius: 25px;
+  font-size: 1rem;
   font-weight: bold;
-  color: white;
-  background: linear-gradient(45deg, #4caf50, #66bb6a);
   cursor: pointer;
   transition: all 0.3s ease;
   font-family: inherit;
+  background: linear-gradient(45deg, #4caf50, #66bb6a);
+  color: white;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .describe-button:hover:not(:disabled) {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
@@ -244,13 +239,18 @@
   transform: none;
 }
 
+/* Remove old styles */
+.action-controls {
+  display: none;
+}
+
 .narration-section {
-  margin-top: 30px;
-  padding: 25px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 20px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  border-left: 5px solid #4caf50;
+  margin-top: 15px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #4caf50;
 }
 
 .narration-content {

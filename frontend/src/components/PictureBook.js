@@ -130,32 +130,47 @@ const PictureBook = ({ ageGroup, language, onBackToModeSelect }) => {
 
   return (
     <div className="picture-book">
-      <div className="picture-book-header">
+      {/* Compact header with back button and navigation */}
+      <div className="compact-header">
         <button 
           className="back-button"
           onClick={onBackToModeSelect}
         >
           ← Back to Mode Selection
         </button>
-        <h2 className="picture-book-title">📚 Picture Book Adventure</h2>
-        <p className="picture-book-subtitle">
-          Click on the image to hear its story! Navigate through the book with the arrows.
-        </p>
+        
+        <div className="top-navigation">
+          <button
+            onClick={handlePrevPage}
+            disabled={currentPage === 0}
+            className="nav-button prev-button"
+          >
+            ← Previous
+          </button>
+          
+          <div className="page-info">
+            <span className="page-counter">
+              Page {currentPage + 1} of {totalPages}
+            </span>
+            {selectedImages.size > 0 && (
+              <span className="selection-counter">
+                ✓ Ready!
+              </span>
+            )}
+          </div>
+          
+          <button
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages - 1}
+            className="nav-button next-button"
+          >
+            Next →
+          </button>
+        </div>
       </div>
 
-      <div className="picture-book-content">
-        <div className="page-info">
-          <span className="page-counter">
-            Page {currentPage + 1} of {totalPages}
-          </span>
-          {selectedImages.size > 0 && (
-            <span className="selection-counter">
-              Image selected - Ready to tell story!
-            </span>
-          )}
-        </div>
-
-        <div className="single-image-container">
+      {/* Main image area - takes most of the space */}
+      <div className="main-image-area">
           <div
             className={`image-card ${selectedImages.has(getCurrentPageImage()) ? 'selected' : ''}`}
             onClick={() => handleImageSelect(getCurrentPageImage())}
@@ -173,44 +188,26 @@ const PictureBook = ({ ageGroup, language, onBackToModeSelect }) => {
           </div>
         </div>
 
-        <div className="book-controls">
-          <div className="navigation-controls">
+      {/* Bottom section with controls and audio */}
+      <div className="bottom-section">
+        {/* Action controls */}
+        <div className="bottom-controls">
+          {selectedImages.size > 0 && (
             <button
-              onClick={handlePrevPage}
-              disabled={currentPage === 0}
-              className="nav-button prev-button"
+              onClick={generateDescription}
+              disabled={isLoading}
+              className="describe-button"
             >
-              ← Previous
+              {isLoading ? 'Creating Story...' : '🎭 Tell Me About This Image'}
             </button>
-            
-            <button
-              onClick={handleNextPage}
-              disabled={currentPage === totalPages - 1}
-              className="nav-button next-button"
-            >
-              Next →
-            </button>
-          </div>
-
-          <div className="action-controls">
-            {selectedImages.size > 0 && (
-              <button
-                onClick={generateDescription}
-                disabled={isLoading}
-                className="describe-button"
-              >
-                {isLoading ? 'Creating Story...' : 
-                 selectedImages.size === 1 ? 
-                 '🎭 Tell Me About This Image' : 
-                 `🎭 Tell Me a Story About These ${selectedImages.size} Images`}
-              </button>
-            )}
-          </div>
+          )}
         </div>
 
+        {/* Loading and error states */}
         {isLoading && <LoadingSpinner />}
         {error && <ErrorMessage message={error} onDismiss={() => setError(null)} />}
 
+        {/* Audio player - positioned at bottom */}
         {narrationData && (
           <div className="narration-section">
             <div className="narration-content">
