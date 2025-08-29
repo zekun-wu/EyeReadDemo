@@ -15,27 +15,19 @@ const PictureBook = ({ ageGroup, language, onBackToModeSelect }) => {
 
   // Sample images from the pictures folder
   const allImages = [
-    'http://localhost:8000/pictures/1.png',
-    'http://localhost:8000/pictures/2.png',
-    'http://localhost:8000/pictures/3.png',
-    'http://localhost:8000/pictures/4.png',
-    'http://localhost:8000/pictures/5.png',
-    'http://localhost:8000/pictures/6.png',
-    'http://localhost:8000/pictures/7.png',
-    'http://localhost:8000/pictures/8.png',
-    'http://localhost:8000/pictures/9.png',
-    'http://localhost:8000/pictures/10.png'
+    'http://localhost:8000/pictures/1.jpg',
+    'http://localhost:8000/pictures/2.jpg',
+    'http://localhost:8000/pictures/3.jpg',
+    'http://localhost:8000/pictures/4.jpg',
+    'http://localhost:8000/pictures/5.jpg'
   ];
 
-  // Calculate total pages (4 images per page)
-  const imagesPerPage = 4;
-  const totalPages = Math.ceil(allImages.length / imagesPerPage);
+  // Now showing 1 image per page
+  const totalPages = allImages.length;
 
-  // Get current page images
-  const getCurrentPageImages = () => {
-    const startIndex = currentPage * imagesPerPage;
-    const endIndex = startIndex + imagesPerPage;
-    return allImages.slice(startIndex, endIndex);
+  // Get current page image
+  const getCurrentPageImage = () => {
+    return allImages[currentPage];
   };
 
   const handleImageSelect = (imagePath) => {
@@ -149,7 +141,7 @@ const PictureBook = ({ ageGroup, language, onBackToModeSelect }) => {
         </button>
         <h2 className="picture-book-title">📚 Picture Book Adventure</h2>
         <p className="picture-book-subtitle">
-          Select images to hear their stories! Click on the pictures you want to explore.
+          Click on the image to hear its story! Navigate through the book with the arrows.
         </p>
       </div>
 
@@ -160,30 +152,27 @@ const PictureBook = ({ ageGroup, language, onBackToModeSelect }) => {
           </span>
           {selectedImages.size > 0 && (
             <span className="selection-counter">
-              {selectedImages.size} image{selectedImages.size !== 1 ? 's' : ''} selected
+              Image selected - Ready to tell story!
             </span>
           )}
         </div>
 
-        <div className="images-grid">
-          {currentPageImages.map((imagePath, index) => (
-            <div
-              key={imagePath}
-              className={`image-card ${selectedImages.has(imagePath) ? 'selected' : ''}`}
-              onClick={() => handleImageSelect(imagePath)}
-            >
-              <img
-                src={imagePath}
-                alt={`Picture book page ${currentPage * imagesPerPage + index + 1}`}
-                className="book-image"
-              />
-              <div className="image-overlay">
-                {selectedImages.has(imagePath) && (
-                  <div className="selection-indicator">✓</div>
-                )}
-              </div>
+        <div className="single-image-container">
+          <div
+            className={`image-card ${selectedImages.has(getCurrentPageImage()) ? 'selected' : ''}`}
+            onClick={() => handleImageSelect(getCurrentPageImage())}
+          >
+            <img
+              src={getCurrentPageImage()}
+              alt={`Picture book page ${currentPage + 1}`}
+              className="book-image"
+            />
+            <div className="image-overlay">
+              {selectedImages.has(getCurrentPageImage()) && (
+                <div className="selection-indicator">✓</div>
+              )}
             </div>
-          ))}
+          </div>
         </div>
 
         <div className="book-controls">
