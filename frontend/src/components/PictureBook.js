@@ -128,8 +128,6 @@ const PictureBook = ({ ageGroup, language, onBackToModeSelect }) => {
     }
   };
 
-  const currentPageImages = getCurrentPageImages();
-
   return (
     <div className="picture-book">
       <div className="picture-book-header">
