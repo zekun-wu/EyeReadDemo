@@ -73,14 +73,16 @@
   font-weight: bold;
 }
 
-/* Main image area - takes most of the space */
+/* Main image area - takes most of the space but leaves room for compact player */
 .main-image-area {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0 20px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+  min-height: 60vh; /* Ensure minimum space for image */
+  max-height: 75vh; /* Leave space for bottom section */
 }
 
 /* Remove old styles that are no longer needed */
@@ -119,8 +121,8 @@
 .book-image {
   width: 100%;
   height: auto;
-  max-height: 80vh; /* Increased to use more space */
-  min-height: 60vh; /* Larger minimum size */
+  max-height: 70vh; /* Adjusted to leave room for compact player */
+  min-height: 55vh; /* Ensure good size while leaving space */
   object-fit: contain; /* Preserve aspect ratio and show all details */
   display: block;
 }
@@ -162,19 +164,57 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Bottom section for controls and audio */
+/* Compact bottom section for controls and audio */
 .bottom-section {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 15px;
-  padding: 15px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 12px;
   margin-top: auto;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  max-height: 25vh; /* Limit height to prevent scrolling */
+  overflow-y: auto; /* Allow internal scrolling if needed */
 }
 
 .bottom-controls {
   display: flex;
   justify-content: center;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+}
+
+/* Compact loading section */
+.loading-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px;
+}
+
+.loading-text {
+  font-size: 0.9rem;
+  color: #4caf50;
+  font-weight: 500;
+}
+
+/* Compact error section */
+.error-section {
+  padding: 10px;
+}
+
+/* Compact player section */
+.compact-player-section {
+  padding: 10px 0;
+}
+
+.compact-transcript {
+  margin-top: 10px;
+  padding: 10px;
+  background: rgba(76, 175, 80, 0.1);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  max-height: 12vh;
+  overflow-y: auto;
 }
 
 /* Remove old navigation controls styles - now in top navigation */
@@ -248,13 +288,9 @@
   display: none;
 }
 
+/* Old narration section - now replaced by compact-player-section */
 .narration-section {
-  margin-top: 15px;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 15px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-  border-left: 4px solid #4caf50;
+  display: none; /* No longer used */
 }
 
 .narration-content {

@@ -188,31 +188,39 @@ const PictureBook = ({ ageGroup, language, onBackToModeSelect }) => {
           </div>
         </div>
 
-      {/* Bottom section with controls and audio */}
-      <div className="bottom-section">
-        {/* Action controls */}
-        <div className="bottom-controls">
-          {selectedImages.size > 0 && (
-            <button
-              onClick={generateDescription}
-              disabled={isLoading}
-              className="describe-button"
-            >
-              {isLoading ? 'Creating Story...' : '🎭 Tell Me About This Image'}
-            </button>
+      {/* Compact bottom section - always visible when image selected */}
+      {selectedImages.size > 0 && (
+        <div className="bottom-section">
+          {/* Show button only if no narration yet, otherwise show player directly */}
+          {!narrationData && !isLoading && (
+            <div className="bottom-controls">
+              <button
+                onClick={generateDescription}
+                className="describe-button"
+              >
+                🎭 Tell Me About This Image
+              </button>
+            </div>
           )}
-        </div>
 
-        {/* Loading and error states */}
-        {isLoading && <LoadingSpinner />}
-        {error && <ErrorMessage message={error} onDismiss={() => setError(null)} />}
+          {/* Loading state - compact */}
+          {isLoading && (
+            <div className="loading-section">
+              <LoadingSpinner />
+              <span className="loading-text">Creating your story...</span>
+            </div>
+          )}
 
-        {/* Audio player - positioned at bottom */}
-        {narrationData && (
-          <div className="narration-section">
-            <div className="narration-content">
-              <h3 className="narration-title">🌟 Story Time!</h3>
-              
+          {/* Error state - compact */}
+          {error && (
+            <div className="error-section">
+              <ErrorMessage message={error} onDismiss={() => setError(null)} />
+            </div>
+          )}
+
+          {/* Audio player - compact and always visible when story is ready */}
+          {narrationData && (
+            <div className="compact-player-section">
               {narrationData.audio_url && (
                 <AudioPlayer
                   ref={audioPlayerRef}
@@ -225,14 +233,14 @@ const PictureBook = ({ ageGroup, language, onBackToModeSelect }) => {
               )}
               
               {showTranscript && (
-                <div className="narration-text">
+                <div className="compact-transcript">
                   <p>{narrationData.narration_text}</p>
                 </div>
               )}
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
