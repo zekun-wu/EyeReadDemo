@@ -53,6 +53,28 @@
   grid-column: 2; /* Center column in grid */
 }
 
+/* Eye-tracking mode button */
+.eye-tracking-button {
+  background: linear-gradient(45deg, #9c27b0, #ba68c8);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  box-shadow: 0 3px 10px rgba(156, 39, 176, 0.3);
+  justify-self: end; /* Align to right side of third column */
+}
+
+.eye-tracking-button:hover {
+  background: linear-gradient(45deg, #8e24aa, #ab47bc);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(156, 39, 176, 0.4);
+}
+
 .page-info {
   display: flex;
   flex-direction: column;
@@ -286,6 +308,28 @@
 /* Remove old styles */
 .action-controls {
   display: none;
+}
+
+/* Fullscreen eye-tracking mode */
+.fullscreen-eye-tracking {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.fullscreen-image {
+  width: 100vw;
+  height: 100vh;
+  object-fit: contain;
+  cursor: crosshair;
 }
 
 /* Old narration section - now replaced by compact-player-section */

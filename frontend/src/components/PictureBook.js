@@ -11,6 +11,7 @@ const PictureBook = ({ ageGroup, language, onBackToModeSelect }) => {
   const [error, setError] = useState(null);
   const [narrationData, setNarrationData] = useState(null);
   const [showTranscript, setShowTranscript] = useState(false);
+  const [isFullscreenMode, setIsFullscreenMode] = useState(false);
   const audioPlayerRef = useRef(null);
 
   // Sample images from the pictures folder
@@ -65,6 +66,52 @@ const PictureBook = ({ ageGroup, language, onBackToModeSelect }) => {
   const handleToggleTranscript = () => {
     setShowTranscript(!showTranscript);
   };
+
+  const handleEnterEyeTrackingMode = async () => {
+    try {
+      // Enter browser fullscreen
+      if (document.documentElement.requestFullscreen) {
+        await document.documentElement.requestFullscreen();
+      }
+      setIsFullscreenMode(true);
+    } catch (error) {
+      console.error('Failed to enter fullscreen:', error);
+      // Still show fullscreen mode even if browser fullscreen fails
+      setIsFullscreenMode(true);
+    }
+  };
+
+  const handleExitFullscreen = () => {
+    setIsFullscreenMode(false);
+    // Exit browser fullscreen if active
+    if (document.exitFullscreen && document.fullscreenElement) {
+      document.exitFullscreen().catch(console.error);
+    }
+  };
+
+  // Listen for ESC key to exit fullscreen
+  React.useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape' && isFullscreenMode) {
+        handleExitFullscreen();
+      }
+    };
+
+    const handleFullscreenChange = () => {
+      // If browser exits fullscreen but component thinks it's still fullscreen
+      if (!document.fullscreenElement && isFullscreenMode) {
+        setIsFullscreenMode(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, [isFullscreenMode]);
 
   const generateDescription = async () => {
     if (selectedImages.size === 0) {
@@ -128,6 +175,19 @@ const PictureBook = ({ ageGroup, language, onBackToModeSelect }) => {
     }
   };
 
+  // If in fullscreen mode, render only the image
+  if (isFullscreenMode) {
+    return (
+      <div className="fullscreen-eye-tracking">
+        <img
+          src={getCurrentPageImage()}
+          alt={`Picture book page ${currentPage + 1}`}
+          className="fullscreen-image"
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="picture-book">
       {/* Compact header with back button and navigation */}
@@ -167,6 +227,14 @@ const PictureBook = ({ ageGroup, language, onBackToModeSelect }) => {
             Next →
           </button>
         </div>
+        
+        {/* Eye-tracking mode button on the right */}
+        <button
+          onClick={handleEnterEyeTrackingMode}
+          className="eye-tracking-button"
+        >
+          👁️ Eye-Tracking Mode
+        </button>
       </div>
 
       {/* Main image area - takes most of the space */}
