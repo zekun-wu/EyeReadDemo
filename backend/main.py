@@ -29,6 +29,9 @@ import azure.cognitiveservices.speech as speechsdk
 from dotenv import load_dotenv
 load_dotenv()
 
+# Import Tobii eye tracking service
+from tobii_eye_tracking_service import get_tobii_eye_tracking_service
+
 app = FastAPI(
     title="GlimmerRead - Child Reading Assistant",
     description="AI-powered reading assistant for children's picture books",
@@ -492,6 +495,171 @@ async def get_audio(filename: str):
         headers={"Cache-Control": "public, max-age=3600"}
     )
 
+
+# Eye Tracking Endpoints
+@app.get("/eye-tracking/status")
+async def get_eye_tracking_status():
+    """Get current status of the eye tracking system"""
+    try:
+        tobii_service = get_tobii_eye_tracking_service()
+        status = tobii_service.get_status()
+        return {
+            "success": True,
+            "status": status
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e),
+            "status": {
+                "connected": False,
+                "tracking": False,
+                "eyetracker_model": None,
+                "device_name": None
+            }
+        }
+
+@app.post("/eye-tracking/connect")
+async def connect_eye_tracker():
+    """Connect to Tobii Pro Fusion eye tracker"""
+    try:
+        tobii_service = get_tobii_eye_tracking_service()
+        success = tobii_service.find_and_connect_eyetracker()
+        
+        if success:
+            return {
+                "success": True,
+                "message": "Eye tracker connected successfully",
+                "status": tobii_service.get_status()
+            }
+        else:
+            return {
+                "success": False,
+                "message": "Failed to connect to eye tracker",
+                "status": tobii_service.get_status()
+            }
+    except Exception as e:
+        return {
+            "success": False,
+            "message": f"Error connecting to eye tracker: {str(e)}"
+        }
+
+@app.post("/eye-tracking/start")
+async def start_eye_tracking():
+    """Start real-time gaze data collection"""
+    try:
+        tobii_service = get_tobii_eye_tracking_service()
+        
+        if not tobii_service.is_connected:
+            # Try to connect first
+            if not tobii_service.find_and_connect_eyetracker():
+                return {
+                    "success": False,
+                    "message": "Eye tracker not connected. Please connect first."
+                }
+        
+        success = tobii_service.start_tracking()
+        
+        if success:
+            return {
+                "success": True,
+                "message": "Eye tracking started successfully",
+                "status": tobii_service.get_status()
+            }
+        else:
+            return {
+                "success": False,
+                "message": "Failed to start eye tracking",
+                "status": tobii_service.get_status()
+            }
+    except Exception as e:
+        return {
+            "success": False,
+            "message": f"Error starting eye tracking: {str(e)}"
+        }
+
+@app.post("/eye-tracking/stop")
+async def stop_eye_tracking():
+    """Stop gaze data collection"""
+    try:
+        tobii_service = get_tobii_eye_tracking_service()
+        success = tobii_service.stop_tracking()
+        
+        return {
+            "success": success,
+            "message": "Eye tracking stopped" if success else "Failed to stop eye tracking",
+            "status": tobii_service.get_status()
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "message": f"Error stopping eye tracking: {str(e)}"
+        }
+
+@app.post("/eye-tracking/set-image")
+async def set_current_image(image_filename: str = Form(...)):
+    """Set the current image being viewed for context"""
+    try:
+        tobii_service = get_tobii_eye_tracking_service()
+        image_path = f"../pictures/{image_filename}"
+        tobii_service.set_image_context(image_path)
+        
+        return {
+            "success": True,
+            "message": f"Current image set to {image_filename}",
+            "image_path": image_path
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "message": f"Error setting current image: {str(e)}"
+        }
+
+@app.get("/eye-tracking/gaze-data")
+async def get_current_gaze_data(count: int = 1):
+    """Get the latest gaze data points"""
+    try:
+        tobii_service = get_tobii_eye_tracking_service()
+        
+        if not tobii_service.is_tracking:
+            return {
+                "success": False,
+                "message": "Eye tracking not active",
+                "gaze_data": []
+            }
+        
+        gaze_data = tobii_service.get_latest_gaze_data(count)
+        current_position = tobii_service.get_current_gaze_position()
+        
+        return {
+            "success": True,
+            "gaze_data": gaze_data,
+            "current_position": current_position,
+            "timestamp": time.time()
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "message": f"Error getting gaze data: {str(e)}",
+            "gaze_data": []
+        }
+
+@app.post("/eye-tracking/disconnect")
+async def disconnect_eye_tracker():
+    """Disconnect from eye tracker"""
+    try:
+        tobii_service = get_tobii_eye_tracking_service()
+        tobii_service.disconnect()
+        
+        return {
+            "success": True,
+            "message": "Eye tracker disconnected successfully"
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "message": f"Error disconnecting eye tracker: {str(e)}"
+        }
 
 @app.delete("/cleanup")
 async def cleanup_temp_files():

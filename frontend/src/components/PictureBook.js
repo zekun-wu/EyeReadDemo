@@ -12,7 +12,10 @@ const PictureBook = ({ ageGroup, language, onBackToModeSelect }) => {
   const [narrationData, setNarrationData] = useState(null);
   const [showTranscript, setShowTranscript] = useState(false);
   const [isFullscreenMode, setIsFullscreenMode] = useState(false);
+  const [gazeData, setGazeData] = useState(null);
+  const [isEyeTrackingActive, setIsEyeTrackingActive] = useState(false);
   const audioPlayerRef = useRef(null);
+  const gazeIntervalRef = useRef(null);
 
   // Sample images from the pictures folder
   const allImages = [
@@ -69,24 +72,133 @@ const PictureBook = ({ ageGroup, language, onBackToModeSelect }) => {
 
   const handleEnterEyeTrackingMode = async () => {
     try {
-      // Enter browser fullscreen
+      console.log('🎯 Starting Eye-Tracking Mode...');
+      
+      // Step 1: Connect to Tobii eye tracker
+      console.log('🔌 Connecting to Tobii Pro Fusion...');
+      const connectResponse = await fetch('http://localhost:8000/eye-tracking/connect', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      const connectResult = await connectResponse.json();
+      console.log('Connection result:', connectResult);
+      
+      if (!connectResult.success) {
+        throw new Error(connectResult.message || 'Failed to connect to eye tracker');
+      }
+      
+      // Step 2: Set current image context
+      const currentImageFile = getCurrentPageImage().split('/').pop(); // Extract filename
+      console.log(`📸 Setting image context to: ${currentImageFile}`);
+      
+      const imageFormData = new FormData();
+      imageFormData.append('image_filename', currentImageFile);
+      
+      const setImageResponse = await fetch('http://localhost:8000/eye-tracking/set-image', {
+        method: 'POST',
+        body: imageFormData,
+      });
+      
+      const setImageResult = await setImageResponse.json();
+      console.log('Set image result:', setImageResult);
+      
+      // Step 3: Start eye tracking
+      console.log('👁️ Starting gaze data collection...');
+      const startResponse = await fetch('http://localhost:8000/eye-tracking/start', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      const startResult = await startResponse.json();
+      console.log('Start tracking result:', startResult);
+      
+      if (!startResult.success) {
+        throw new Error(startResult.message || 'Failed to start eye tracking');
+      }
+      
+      // Step 4: Enter browser fullscreen
+      console.log('🖥️ Entering fullscreen mode...');
       if (document.documentElement.requestFullscreen) {
         await document.documentElement.requestFullscreen();
       }
+      
       setIsFullscreenMode(true);
+      setIsEyeTrackingActive(true);
+      
+      // Start real-time gaze data fetching
+      startGazeDataPolling();
+      
+      console.log('✅ Eye-Tracking Mode activated successfully!');
+      
     } catch (error) {
-      console.error('Failed to enter fullscreen:', error);
-      // Still show fullscreen mode even if browser fullscreen fails
+      console.error('❌ Failed to enter Eye-Tracking Mode:', error);
+      alert(`Failed to start Eye-Tracking Mode: ${error.message}`);
+      // Still show fullscreen mode even if eye tracking fails
       setIsFullscreenMode(true);
     }
   };
 
-  const handleExitFullscreen = () => {
+  const startGazeDataPolling = () => {
+    // Poll for gaze data every 50ms (20 FPS)
+    gazeIntervalRef.current = setInterval(async () => {
+      try {
+        const response = await fetch('http://localhost:8000/eye-tracking/gaze-data');
+        const result = await response.json();
+        
+        if (result.success && result.current_position) {
+          setGazeData(result.current_position);
+        }
+      } catch (error) {
+        console.error('Error fetching gaze data:', error);
+      }
+    }, 50);
+  };
+
+  const stopGazeDataPolling = () => {
+    if (gazeIntervalRef.current) {
+      clearInterval(gazeIntervalRef.current);
+      gazeIntervalRef.current = null;
+    }
+    setGazeData(null);
+  };
+
+  const handleExitFullscreen = async () => {
+    try {
+      console.log('🛑 Exiting Eye-Tracking Mode...');
+      
+      // Stop gaze data polling
+      stopGazeDataPolling();
+      setIsEyeTrackingActive(false);
+      
+      // Stop eye tracking
+      console.log('⏸️ Stopping gaze data collection...');
+      const stopResponse = await fetch('http://localhost:8000/eye-tracking/stop', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      const stopResult = await stopResponse.json();
+      console.log('Stop tracking result:', stopResult);
+      
+    } catch (error) {
+      console.error('⚠️ Error stopping eye tracking:', error);
+      // Continue with exit even if stopping fails
+    }
+    
     setIsFullscreenMode(false);
     // Exit browser fullscreen if active
     if (document.exitFullscreen && document.fullscreenElement) {
       document.exitFullscreen().catch(console.error);
     }
+    
+    console.log('✅ Eye-Tracking Mode deactivated');
   };
 
   // Listen for ESC key to exit fullscreen
@@ -112,6 +224,13 @@ const PictureBook = ({ ageGroup, language, onBackToModeSelect }) => {
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
     };
   }, [isFullscreenMode]);
+
+  // Cleanup gaze polling on component unmount
+  React.useEffect(() => {
+    return () => {
+      stopGazeDataPolling();
+    };
+  }, []);
 
   const generateDescription = async () => {
     if (selectedImages.size === 0) {
@@ -184,6 +303,29 @@ const PictureBook = ({ ageGroup, language, onBackToModeSelect }) => {
           alt={`Picture book page ${currentPage + 1}`}
           className="fullscreen-image"
         />
+        
+        {/* Gaze indicator */}
+        {isEyeTrackingActive && gazeData && (
+          <div
+            className="gaze-indicator"
+            style={{
+              left: `${gazeData.x}px`,
+              top: `${gazeData.y}px`,
+            }}
+          />
+        )}
+        
+        {/* Eye tracking status */}
+        <div className="eye-tracking-status">
+          <div className={`status-indicator ${isEyeTrackingActive ? 'active' : 'inactive'}`}>
+            {isEyeTrackingActive ? '👁️ Eye Tracking Active' : '⏸️ Eye Tracking Paused'}
+          </div>
+          {gazeData && (
+            <div className="gaze-coords">
+              X: {Math.round(gazeData.x)}, Y: {Math.round(gazeData.y)}
+            </div>
+          )}
+        </div>
       </div>
     );
   }
