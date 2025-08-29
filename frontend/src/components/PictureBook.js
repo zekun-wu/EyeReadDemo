@@ -144,17 +144,24 @@ const PictureBook = ({ ageGroup, language, onBackToModeSelect }) => {
   };
 
   const startGazeDataPolling = () => {
+    console.log('🎯 Starting gaze data polling...');
     // Poll for gaze data every 50ms (20 FPS)
     gazeIntervalRef.current = setInterval(async () => {
       try {
         const response = await fetch('http://localhost:8000/eye-tracking/gaze-data');
         const result = await response.json();
         
+        console.log('📊 Gaze data response:', result);
+        
         if (result.success && result.current_position) {
+          console.log('👁️ Gaze position:', result.current_position);
           setGazeData(result.current_position);
+        } else {
+          console.log('⚠️ No valid gaze position received');
+          // Don't clear gazeData immediately, keep last known position for a bit
         }
       } catch (error) {
-        console.error('Error fetching gaze data:', error);
+        console.error('❌ Error fetching gaze data:', error);
       }
     }, 50);
   };
@@ -313,6 +320,13 @@ const PictureBook = ({ ageGroup, language, onBackToModeSelect }) => {
               top: `${gazeData.y}px`,
             }}
           />
+        )}
+        
+        {/* Debug: Show if gaze data exists but no indicator */}
+        {isEyeTrackingActive && !gazeData && (
+          <div className="gaze-debug">
+            👁️ Waiting for gaze data...
+          </div>
         )}
         
         {/* Eye tracking status */}

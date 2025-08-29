@@ -335,30 +335,42 @@
 /* Gaze indicator - shows where user is looking */
 .gaze-indicator {
   position: absolute;
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  background: rgba(255, 0, 0, 0.7);
-  border: 2px solid rgba(255, 255, 255, 0.8);
+  background: rgba(147, 39, 143, 0.8); /* Purple background */
+  border: 3px solid rgba(186, 104, 200, 0.9); /* Lighter purple border */
   transform: translate(-50%, -50%);
   pointer-events: none;
   z-index: 1000;
-  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-  animation: pulse 1s infinite;
+  box-shadow: 
+    0 0 20px rgba(147, 39, 143, 0.6),
+    0 0 40px rgba(147, 39, 143, 0.3);
+  animation: gazeIndicator 1.5s infinite ease-in-out;
+  transition: all 0.1s ease-out; /* Smooth movement */
 }
 
-@keyframes pulse {
+@keyframes gazeIndicator {
   0% {
     transform: translate(-50%, -50%) scale(1);
-    opacity: 0.7;
+    opacity: 0.8;
+    box-shadow: 
+      0 0 20px rgba(147, 39, 143, 0.6),
+      0 0 40px rgba(147, 39, 143, 0.3);
   }
   50% {
-    transform: translate(-50%, -50%) scale(1.2);
+    transform: translate(-50%, -50%) scale(1.3);
     opacity: 1;
+    box-shadow: 
+      0 0 30px rgba(147, 39, 143, 0.8),
+      0 0 60px rgba(147, 39, 143, 0.5);
   }
   100% {
     transform: translate(-50%, -50%) scale(1);
-    opacity: 0.7;
+    opacity: 0.8;
+    box-shadow: 
+      0 0 20px rgba(147, 39, 143, 0.6),
+      0 0 40px rgba(147, 39, 143, 0.3);
   }
 }
 
@@ -394,6 +406,26 @@
   font-size: 12px;
   color: #ccc;
   font-family: 'Courier New', monospace;
+}
+
+/* Debug message for gaze data */
+.gaze-debug {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 15px 25px;
+  border-radius: 10px;
+  font-size: 18px;
+  z-index: 1002;
+  animation: fadeInOut 2s infinite;
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
 }
 
 /* Old narration section - now replaced by compact-player-section */
